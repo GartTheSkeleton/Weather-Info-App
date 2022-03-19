@@ -16,7 +16,7 @@
             <div class="col-3" id="buttonBox">
                 <div class="row p-2">
                     <h2>Search for a City:</h2>
-                    <input type="text" class="form-control" id="cityInput" placeholder="Nashville">
+                    <input type="text" class="form-control" id="cityInput" placeholder="Input city">
                     <button class="btn btn-primary mt-3" id="searchBtn">Search</button>
                     <div class="col-12 border border-top border-black my-3"></div>
                     <div id="historyBlock">Past searches go here as buttons</div>
@@ -24,11 +24,11 @@
             </div>
             <div class="col-9" id="displayPanel">
                 <div class="row border border-black p-2 m-2" id="mainPanel">
-                    <h3 class = col-8 id="cityNameDisplay">City Name</h3> <div class="col-4" id="iconBlock">Icon goes here</div>
+                    <h3 class = col-8 id="cityNameDisplay">City Name</h3> <div class="col-4"><img id="iconBlock"></img></div>
                     <div class="m-1" id="tempBlock">Temp:</div>
                     <div class="m-1" id="windBlock">Wind:</div>
                     <div class="m-1" id="humidBlock">Humidity:</div>
-                    <div class="m-1" id="uvBlock">UV Index:</div>
+                    <div class="m-1" id="uvBlock">UV Index:<button class="btn btn-success" id="severityWarning"></button></div>
                 </div>
                 <div class="row p-2 m-2" id="forecastPanel">
                     <h4>5 Day Forecast:</h4>
