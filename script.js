@@ -16,6 +16,13 @@ let windSpeed = '';
 let currentHumid = '';
 let currentUv = '';
 let currentIcon = '';
+let forecastDate = '';
+let forecastTemp = '';
+let forecastWind = '';
+let forecastHumid = '';
+let forecastUv = '';
+let forecastIcon = '';
+
 
 let historyArray = [];
 let historyVolume = 8;
@@ -32,6 +39,16 @@ let humidBlock = document.querySelector('#humidBlock');
 let uvBlock = document.querySelector('#uvBlock');
 let iconBlock = document.querySelector('#iconBlock');
 let severityBlock = document.querySelector("#severityWarning");
+
+let forecast1 = document.querySelector("#forecast1");
+let forecast2 = document.querySelector("#forecast2");
+let forecast3 = document.querySelector("#forecast3");
+let forecast4 = document.querySelector("#forecast4");
+let forecast5 = document.querySelector("#forecast5");
+
+let forecastArray = [forecast1,forecast2,forecast3,forecast4,forecast5];
+
+console.log(forecastArray[0].children[0])
 
 
 //Function to parse and handle searching
@@ -82,10 +99,22 @@ let displayFunction = function(){
         currentHumid = data.current.humidity;
         currentUv = data.current.uvi;
         currentIcon = data.current.weather[0].icon;
+
+        timeConvert();
+
+        for (let i = 0; i < 5; i++){
+            forecastDate = forecastArray[i].children[0];
+            forecastDate.textContent = "Date: "+data.daily[i].temp.day;
+            forecastIcon = forecastArray[i].children[1];
+            forecastIcon.src = 'http://openweathermap.org/img/wn/'+data.daily[i].weather[0].icon+'.png';
+            forecastTemp = forecastArray[i].children[2];
+            forecastTemp.textContent = 'Temp: '+data.daily[i].temp.day+'°F';
+        }
         console.log(currentIcon);
     })
     .then(function(){
-        timeConvert();
+        
+        updateFunction();
     });
 
 }
@@ -95,6 +124,13 @@ let timeConvert = function(){
     let adjustedDate = currentDateUnix * 1000
     let dateObject = new Date(adjustedDate);
     currentDate = dateObject.toLocaleString('en-US');
+    return;
+}
+
+//Assign the pertinent information to the display blocks
+
+let updateFunction = function(){
+    //handle current day stats
     displayCityName.textContent = cityName +" "+currentDate;
     tempBlock.textContent = 'Temp: '+currentTemp+"°F";
     windBlock.textContent = 'Wind: '+windDeg+' Degrees, '+windSpeed+' mph';
@@ -120,8 +156,6 @@ let timeConvert = function(){
         }
     }
 }
-
-//Assign the pertinent information to the display blocks
 
 //Move past searches into history as clickable objects to bring their info back up
 
