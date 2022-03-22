@@ -23,10 +23,6 @@ let forecastHumid = '';
 let forecastUv = '';
 let forecastIcon = '';
 
-
-let historyArray = [];
-let historyVolume = 8;
-
 //Target all relevant elements on the page
 let cityInput = document.querySelector('#cityInput');
 let searchBtn = document.querySelector('#searchBtn');
@@ -39,6 +35,23 @@ let humidBlock = document.querySelector('#humidBlock');
 let uvBlock = document.querySelector('#uvBlock');
 let iconBlock = document.querySelector('#iconBlock');
 let severityBlock = document.querySelector("#severityWarning");
+let historyBtn = document.querySelector('.historyBtn');
+let history1 = document.querySelector('#history1');
+history1.style.display = 'none'
+let history2 = document.querySelector('#history2');
+history2.style.display = 'none'
+let history3 = document.querySelector('#history3');
+history3.style.display = 'none'
+let history4 = document.querySelector('#history4');
+history4.style.display = 'none'
+let history5 = document.querySelector('#history5');
+history5.style.display = 'none'
+let history6 = document.querySelector('#history6');
+history6.style.display = 'none'
+
+let memoryLast = '';
+let historyArray = [history1,history2,history3,history4,history5,history6];
+let historyCurrent = 0
 
 let forecast1 = document.querySelector("#forecast1");
 let forecast2 = document.querySelector("#forecast2");
@@ -48,7 +61,7 @@ let forecast5 = document.querySelector("#forecast5");
 
 let forecastArray = [forecast1,forecast2,forecast3,forecast4,forecast5];
 
-console.log(forecastArray[0].children[0])
+let saveArray = [];
 
 
 //Function to parse and handle searching
@@ -59,6 +72,22 @@ let searchFunction = function(){
         window.alert("No city provided.")
         return;
     } else {
+        if (memoryLast != ''){
+            if (historyCurrent != 0){
+                for (let i=historyCurrent;i>0;i--){
+                    
+                    historyArray[i].textContent = historyArray[i-1].textContent
+                }
+            }
+            historyArray[0].textContent = memoryLast;
+            console.log(historyArray[historyCurrent-1]);
+            if (historyCurrent < historyArray.length-1){
+                historyArray[historyCurrent].style.display = 'inline';
+                historyCurrent += 1;
+            }
+            
+        }
+
         //API call to determine latitude and longitude of the searched city
         fetch('http://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
         .then(function (response) {
@@ -73,6 +102,8 @@ let searchFunction = function(){
                 targetLon = data[0].lon;
 
                 console.log(cityName+" "+targetLat+" "+targetLon+" "+currentDate);
+
+                memoryLast = cityName;
                 displayFunction();
             }
         })
@@ -82,7 +113,6 @@ let searchFunction = function(){
 
 //Use Lat and Lon to make API call for the weather information
 let displayFunction = function(){
-    
 
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+targetLat+'&lon='+targetLon+'&units=imperial&appid='+oneWeatherKey)
     .then(function(response) {
@@ -93,6 +123,7 @@ let displayFunction = function(){
         console.log(data.current.dt);
         //assign info from the fetched data
         currentDateUnix = data.current.dt;
+        timeConvert();
         currentTemp = data.current.temp;
         windDeg = data.current.wind_deg;
         windSpeed = data.current.wind_speed;
@@ -100,23 +131,24 @@ let displayFunction = function(){
         currentUv = data.current.uvi;
         currentIcon = data.current.weather[0].icon;
 
-        timeConvert();
+        updateFunction();
+       
 
         for (let i = 0; i < 5; i++){
             forecastDate = forecastArray[i].children[0];
-            forecastDate.textContent = "Date: "+data.daily[i].temp.day;
+            currentDateUnix = data.daily[i].dt;
+            timeConvert();
+            forecastDate.textContent = 'Date: '+currentDate;
             forecastIcon = forecastArray[i].children[1];
             forecastIcon.src = 'http://openweathermap.org/img/wn/'+data.daily[i].weather[0].icon+'.png';
             forecastTemp = forecastArray[i].children[2];
             forecastTemp.textContent = 'Temp: '+data.daily[i].temp.day+'°F';
+            forecastWind = forecastArray[i].children[3];
+            forecastWind.textContent = 'Wind: '+data.daily[i].wind_speed+' mph';
+            forecastHumid = forecastArray[i].children[4];
+            forecastHumid.textContent = "Humidity: "+data.daily[i].humidity+"%";
         }
-        console.log(currentIcon);
     })
-    .then(function(){
-        
-        updateFunction();
-    });
-
 }
 
 //Convert Unix Time
@@ -130,6 +162,7 @@ let timeConvert = function(){
 //Assign the pertinent information to the display blocks
 
 let updateFunction = function(){
+    console.log(historyCurrent)
     //handle current day stats
     displayCityName.textContent = cityName +" "+currentDate;
     tempBlock.textContent = 'Temp: '+currentTemp+"°F";
@@ -155,11 +188,59 @@ let updateFunction = function(){
             severityBlock.classList.add('btn-danger');
         }
     }
+
+
 }
 
 //Move past searches into history as clickable objects to bring their info back up
+let recallFunction = function(){
 
-//Make save function to remember your search history and last open search in local storage
+    console.log(this)
+
+    initialSearch = this.textContent;
+    if (memoryLast != ''){
+            if (historyCurrent != 0){
+                for (let i=historyCurrent;i>0;i--){
+                    historyArray[i].textContent = historyArray[i-1].textContent
+                }
+            
+            historyArray[0].textContent = memoryLast;
+            historyArray[historyCurrent].style.display = 'inline';
+            if (historyCurrent < historyArray.length-1){
+                historyCurrent += 1;
+            }
+        }
+
+        //API call to determine latitude and longitude of the searched city
+        fetch('http://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
+        .then(function (response) {
+            return response.json();
+          })
+        .then(function(data) {
+            if (data.length == 0){
+                window.alert("Cannot find a city named"+initialSearch+".");
+            } else {
+                cityName = data[0].name
+                targetLat = data[0].lat;
+                targetLon = data[0].lon;
+
+                console.log(cityName+" "+targetLat+" "+targetLon+" "+currentDate);
+
+                memoryLast = cityName;
+                displayFunction();
+            }
+        })
+    }
+}
+
+
+
 
 //Eventlisteners to interact with the page
 searchBtn.addEventListener('click', searchFunction);
+history1.addEventListener('click', recallFunction);
+history2.addEventListener('click', recallFunction);
+history3.addEventListener('click', recallFunction);
+history4.addEventListener('click', recallFunction);
+history5.addEventListener('click', recallFunction);
+history6.addEventListener('click', recallFunction);

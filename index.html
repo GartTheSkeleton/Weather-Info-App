@@ -19,7 +19,14 @@
                     <input type="text" class="form-control" id="cityInput" placeholder="Input city">
                     <button class="btn btn-primary mt-3" id="searchBtn">Search</button>
                     <div class="col-12 border border-top border-black my-3"></div>
-                    <div id="historyBlock">Past searches go here as buttons</div>
+                    <div class="col-12" id="historyBlock">
+                        <button class='btn btn-primary historyBtn col-12' id="history1"></button>
+                        <button class='btn btn-primary historyBtn col-12' id="history2"></button>
+                        <button class='btn btn-primary historyBtn col-12' id="history3"></button>
+                        <button class='btn btn-primary historyBtn col-12' id="history4"></button>
+                        <button class='btn btn-primary historyBtn col-12' id="history5"></button>
+                        <button class='btn btn-primary historyBtn col-12' id="history6"></button>
+                    </div>
                 </div>
             </div>
             <div class="col-9" id="displayPanel">
@@ -28,7 +35,7 @@
                     <div class="m-1" id="tempBlock">Temp:</div>
                     <div class="m-1" id="windBlock">Wind:</div>
                     <div class="m-1" id="humidBlock">Humidity:</div>
-                    <div class="m-1" id="uvBlock">UV Index:<button class="btn btn-success" id="severityWarning"></button></div>
+                    <div class="m-1" id="uvBlock">UV Index: <button class="btn btn-success" id="severityWarning"></button></div>
                 </div>
                 <div class="row p-2 m-2" id="forecastPanel">
                     <h4>5 Day Forecast:</h4>
@@ -73,6 +80,8 @@
             </div>
         </div>
     </div>
+
+    <div class="historyBtn"></div>
 
     <script src="./script.js"></script>
 </body>
