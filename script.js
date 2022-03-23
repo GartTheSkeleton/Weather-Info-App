@@ -62,7 +62,22 @@ let forecast5 = document.querySelector("#forecast5");
 let forecastArray = [forecast1,forecast2,forecast3,forecast4,forecast5];
 
 let saveArray = [];
+let savePoint = 0;
 
+var loadData = function(){
+    saveArray = JSON.parse(localStorage.getItem("saveArray"));
+    savePoint = JSON.parse(localStorage.getItem("savePoint"))
+ }
+ 
+ loadData();
+
+ if (savePoint != 0){
+     console.log('saved data detected')
+     for (let i = 0; i < savePoint; i++){
+         historyArray[i].textContent = saveArray[i];
+         historyArray[i].style.display = "inline";
+     }
+ }
 
 //Function to parse and handle searching
 let searchFunction = function(){
@@ -189,7 +204,7 @@ let updateFunction = function(){
         }
     }
 
-
+    saveFunction();
 }
 
 //Move past searches into history as clickable objects to bring their info back up
@@ -199,7 +214,7 @@ let recallFunction = function(){
 
     initialSearch = this.textContent;
     if (memoryLast != ''){
-            if (historyCurrent != 0){
+            // if (historyCurrent != 0){
                 for (let i=historyCurrent;i>0;i--){
                     historyArray[i].textContent = historyArray[i-1].textContent
                 }
@@ -230,10 +245,36 @@ let recallFunction = function(){
                 displayFunction();
             }
         })
-    }
+    // }
 }
 
 
+let saveFunction = function(){
+    saveArray[0] = historyArray[0].textContent
+    saveArray[1] = historyArray[1].textContent
+    saveArray[2] = historyArray[2].textContent
+    saveArray[3] = historyArray[3].textContent
+    saveArray[4] = historyArray[4].textContent
+    saveArray[5] = historyArray[5].textContent
+    savePoint = historyCurrent
+
+    for (let i=0;i<5;i++){
+        if (saveArray[i] == ""){
+            savePoint = i
+            break;
+        }
+    }
+    console.log(savePoint +" "+ historyCurrent)
+    console.log(saveArray)
+
+    window.localStorage.setItem('saveArray', JSON.stringify(saveArray))
+    window.localStorage.setItem('savePoint', JSON.stringify(savePoint))
+    
+}
+
+let clearFunction = function(){
+    window.localStorage.clear();
+}
 
 
 //Eventlisteners to interact with the page
