@@ -1,8 +1,8 @@
 let oneWeatherKey = '838280be2c1fc8d64cd45714416631d8';
 
 // API Link https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={API key}
-// Icon Link http://openweathermap.org/img/wn/{ICON NUMBER}.png
-// Geocoding Link http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
+// Icon Link https://openweathermap.org/img/wn/{ICON NUMBER}.png
+// Geocoding Link https://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
 
 let initialSearch = '';
 let targetLat = '';
