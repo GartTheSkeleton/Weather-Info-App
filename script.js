@@ -65,7 +65,10 @@ let saveArray = ['.','.','.','.','.','.'];
 let savePoint = 0;
 
 var loadData = function(){
-    saveArray = JSON.parse(localStorage.getItem("saveArray"));
+    if (localStorage.getItem("saveArray") != null){
+        saveArray = JSON.parse(localStorage.getItem("saveArray"));
+    }
+    
     savePoint = JSON.parse(localStorage.getItem("savePoint"))
  }
  
