@@ -61,7 +61,7 @@ let forecast5 = document.querySelector("#forecast5");
 
 let forecastArray = [forecast1,forecast2,forecast3,forecast4,forecast5];
 
-let saveArray = [];
+let saveArray = ['.','.','.','.','.','.'];
 let savePoint = 0;
 
 var loadData = function(){
