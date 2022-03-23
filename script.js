@@ -104,7 +104,7 @@ let searchFunction = function(){
         }
 
         //API call to determine latitude and longitude of the searched city
-        fetch('http://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
+        fetch('https://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
         .then(function (response) {
             return response.json();
           })
@@ -155,7 +155,7 @@ let displayFunction = function(){
             timeConvert();
             forecastDate.textContent = 'Date: '+currentDate;
             forecastIcon = forecastArray[i].children[1];
-            forecastIcon.src = 'http://openweathermap.org/img/wn/'+data.daily[i].weather[0].icon+'.png';
+            forecastIcon.src = 'https://openweathermap.org/img/wn/'+data.daily[i].weather[0].icon+'.png';
             forecastTemp = forecastArray[i].children[2];
             forecastTemp.textContent = 'Temp: '+data.daily[i].temp.day+'°F';
             forecastWind = forecastArray[i].children[3];
@@ -184,7 +184,7 @@ let updateFunction = function(){
     windBlock.textContent = 'Wind: '+windDeg+' Degrees, '+windSpeed+' mph';
     humidBlock.textContent = 'Humidity: '+currentHumid+'%';
     
-    let currentIconUrl = 'http://openweathermap.org/img/wn/'+currentIcon+'.png';
+    let currentIconUrl = 'https://openweathermap.org/img/wn/'+currentIcon+'.png';
     iconBlock.src = currentIconUrl;
 
     severityBlock.textContent = currentUv;
@@ -227,7 +227,7 @@ let recallFunction = function(){
         }
 
         //API call to determine latitude and longitude of the searched city
-        fetch('http://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
+        fetch('https://api.openweathermap.org/geo/1.0/direct?q='+initialSearch+'&limit=5&appid='+oneWeatherKey)
         .then(function (response) {
             return response.json();
           })
