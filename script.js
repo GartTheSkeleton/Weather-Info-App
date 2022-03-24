@@ -79,6 +79,7 @@ var loadData = function(){
      for (let i = 0; i < savePoint; i++){
          historyArray[i].textContent = saveArray[i];
          historyArray[i].style.display = "inline";
+         historyCurrent += 1;
      }
  }
 
